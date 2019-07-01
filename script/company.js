@@ -8,7 +8,7 @@ class Company {
         this.closingHour = closingHour;
         this.time = {
             hour: openingHour,
-            day: 0
+            day: 0,
         };
 
         this.createDesks();
@@ -40,7 +40,7 @@ class Company {
     makeDesk(props) {
         return {
             productivity: props.productivity,
-            employee: null
+            employee: null,
         };
     }
 
