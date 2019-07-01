@@ -52,7 +52,7 @@ class Company {
     }
 
     addEmployee(employee) {
-        console.log("adding employee");
+        console.log('adding employee');
         this.employees.push(employee);
         employee.company = this;
     }

@@ -70,12 +70,12 @@ const start = () => {
 
 const initializeUI = () => {
     const label = (label, id) => {
-        const container = document.createElement("div");
+        const container = document.createElement('div');
         container.className = `info i-${id}`;
-        const labelEl = document.createElement("span");
-        labelEl.className = "label";
+        const labelEl = document.createElement('span');
+        labelEl.className = 'label';
         labelEl.innerText = `${label}: `;
-        const value = document.createElement("span");
+        const value = document.createElement('span');
         value.id = id;
         container.append(labelEl);
         container.append(value);
@@ -83,14 +83,14 @@ const initializeUI = () => {
     };
 
     const button = (btnText, id, action) => {
-        const btn = document.createElement("button");
+        const btn = document.createElement('button');
         btn.innerText = `${btnText}`;
         btn.id = `${id}`;
-        btn.addEventListener("click", () =>
+        btn.addEventListener('click', () =>
             company.addEmployee(
                 new Employee({
-                    name: "oz",
-                    gender: "g",
+                    name: 'oz',
+                    gender: 'g',
                     salary: 10,
                     productivity: 1,
                     lunchHour: randValue([12, 1, 2])
@@ -100,16 +100,16 @@ const initializeUI = () => {
         return btn;
     };
 
-    const info = document.createElement("div");
+    const info = document.createElement('div');
 
-    info.appendChild(label("Funds", "funds"));
-    info.appendChild(label("Employees", "employees"));
-    info.appendChild(label("Desks", "desks"));
-    info.appendChild(label("Day", "day"));
-    info.appendChild(label("Time", "time"));
+    info.appendChild(label('Funds', 'funds'));
+    info.appendChild(label('Employees', 'employees'));
+    info.appendChild(label('Desks', 'desks'));
+    info.appendChild(label('Day', 'day'));
+    info.appendChild(label('Time', 'time'));
 
-    q("#main").append(info);
-    q(".i-employees").appendChild(button("buy employee", "buyEmployee"));
+    q('#main').append(info);
+    q('.i-employees').appendChild(button('buy employee', 'buyEmployee'));
 };
 
 const updateUI = (company, timer) => {
@@ -119,11 +119,11 @@ const updateUI = (company, timer) => {
         }
         return acc;
     }, 0);
-    q("#funds").innerText = `$${company.funds.toFixed(2)}`;
-    q("#employees").innerText = company.employees.length;
-    q("#desks").innerText = `${busyDesks} / ${company.desks.length}`;
-    q("#day").innerText = DAYS[company.time.day];
-    q("#time").innerText = `${company.time.hour}:00`;
+    q('#funds').innerText = `$${company.funds.toFixed(2)}`;
+    q('#employees').innerText = company.employees.length;
+    q('#desks').innerText = `${busyDesks} / ${company.desks.length}`;
+    q('#day').innerText = DAYS[company.time.day];
+    q('#time').innerText = `${company.time.hour}:00`;
 };
 
 initializeUI(company);
