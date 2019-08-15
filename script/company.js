@@ -52,6 +52,7 @@ class Company {
     }
 
     addEmployee(employee) {
+        console.log('adding employee');
         this.employees.push(employee);
         employee.company = this;
     }
@@ -59,7 +60,7 @@ class Company {
     findEmptyDesk() {
         return this.desks.find(desk => !desk.employee);
     }
-    
+
     doWork() {
         const totalFunds = this.desks.reduce((acc, desk) => {
             if (desk.employee) {

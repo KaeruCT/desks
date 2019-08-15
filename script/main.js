@@ -1,24 +1,26 @@
 const q = selector => document.querySelector(selector);
 
-const start = () => {
-    const company = new Company({
-        maxDesks: 5,
-        funds: 1000,
-        openingHour: 7,
-        closingHour: 19,
-    });
+const company = new Company({
+    maxDesks: 5,
+    funds: 1000,
+    openingHour: 7,
+    closingHour: 19
+});
 
+const start = () => {
     const initialEmployees = 5;
 
     for (let i = 0; i < initialEmployees; i++) {
-        const { name, gender} = randValue(employeeValues);
-        company.addEmployee(new Employee({
-            name: name,
-            gender: gender,
-            salary: 10,
-            productivity: 1,
-            lunchHour: randValue([12, 1, 2]),
-        }));
+        const { name, gender } = randValue(employeeValues);
+        company.addEmployee(
+            new Employee({
+                name: name,
+                gender: gender,
+                salary: 10,
+                productivity: 1,
+                lunchHour: randValue([12, 1, 2])
+            })
+        );
     }
 
     const hourLength = 1; // in seconds
@@ -28,7 +30,11 @@ const start = () => {
     let prevDay;
 
     const step = () => {
-        const { time: { hour, day }, openingHour, closingHour } = company;
+        const {
+            time: { hour, day },
+            openingHour,
+            closingHour
+        } = company;
         if (prevDay !== day) {
             calledStartOfDay = false;
         }
@@ -58,14 +64,14 @@ const start = () => {
         prevDay = day;
         setTimeout(step, 1000);
     };
-    
+
     step();
-}
+};
 
 const initializeUI = () => {
     const label = (label, id) => {
         const container = document.createElement('div');
-        container.className = 'info';
+        container.className = `info i-${id}`;
         const labelEl = document.createElement('span');
         labelEl.className = 'label';
         labelEl.innerText = `${label}: `;
@@ -74,7 +80,25 @@ const initializeUI = () => {
         container.append(labelEl);
         container.append(value);
         return container;
-    }
+    };
+
+    const button = (btnText, id, action) => {
+        const btn = document.createElement('button');
+        btn.innerText = `${btnText}`;
+        btn.id = `${id}`;
+        btn.addEventListener('click', () =>
+            company.addEmployee(
+                new Employee({
+                    name: 'oz',
+                    gender: 'g',
+                    salary: 10,
+                    productivity: 1,
+                    lunchHour: randValue([12, 1, 2])
+                })
+            )
+        );
+        return btn;
+    };
 
     const info = document.createElement('div');
 
@@ -85,12 +109,13 @@ const initializeUI = () => {
     info.appendChild(label('Time', 'time'));
 
     q('#main').append(info);
+    q('.i-employees').appendChild(button('buy employee', 'buyEmployee'));
 };
 
 const updateUI = (company, timer) => {
     const busyDesks = company.desks.reduce((acc, desk) => {
         if (desk.employee) {
-            acc +=1 ;
+            acc += 1;
         }
         return acc;
     }, 0);
@@ -101,5 +126,5 @@ const updateUI = (company, timer) => {
     q('#time').innerText = `${company.time.hour}:00`;
 };
 
-initializeUI();
+initializeUI(company);
 start();
