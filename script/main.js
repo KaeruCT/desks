@@ -7,20 +7,19 @@ const company = new Company({
     closingHour: 19
 });
 
+const makeEmployee = props => new Employee({
+    salary: 10,
+    productivity: 1,
+    lunchHour: randValue([12, 1, 2]),
+    ...props,
+});
+
 const start = () => {
     const initialEmployees = 5;
 
     for (let i = 0; i < initialEmployees; i++) {
         const { name, gender } = randValue(employeeValues);
-        company.addEmployee(
-            new Employee({
-                name: name,
-                gender: gender,
-                salary: 10,
-                productivity: 1,
-                lunchHour: randValue([12, 1, 2])
-            })
-        );
+        company.addEmployee(makeEmployee({ name, gender }));
     }
 
     const hourLength = 1; // in seconds
@@ -69,48 +68,33 @@ const start = () => {
 };
 
 const initializeUI = () => {
-    const label = (label, id) => {
-        const container = document.createElement('div');
-        const labelEl = document.createElement('span');
-        labelEl.className = 'label tr b dib';
-        labelEl.innerText = `${label}: `;
-        const value = document.createElement('span');
-        value.id = id;
-        container.append(labelEl);
-        container.append(value);
-        return container;
-    };
-
-    const makeButton = (btnText, action) => {
-        const btn = document.createElement('button');
-        btn.className = 'f6 link dim br2 ph3 pv2 dib white bg-dark-blue';
-        btn.innerText = btnText;
-        btn.addEventListener('click', action);
-        return btn;
-    };
-
     const info = document.createElement('div');
     info.className = 'bb b--moon-gray pa3 info';
 
-    info.appendChild(label('Funds', 'funds'));
-    info.appendChild(label('Employees', 'employees'));
-    info.appendChild(label('Desks', 'desks'));
-    info.appendChild(label('Day', 'day'));
-    info.appendChild(label('Time', 'time'));
+    info.appendChild(makeLabel('Funds', 'funds'));
+    info.appendChild(makeLabel('Employees', 'employees'));
+    info.appendChild(makeLabel('Desks', 'desks'));
+    info.appendChild(makeLabel('Day', 'day'));
+    info.appendChild(makeLabel('Time', 'time'));
 
     const toolbar = document.createElement('div');
     toolbar.className = 'pa3';
-    toolbar.appendChild(makeButton('hire employee', () =>
-        company.addEmployee(
-            new Employee({
-                name: 'oz',
-                gender: 'g',
-                salary: 10,
-                productivity: 1,
-                lunchHour: randValue([12, 1, 2])
-            })
-        )
-    ));
+
+    const levelDropdown = makeDropdown(EMPLOYEE_LEVELS.map(el => ({
+        text: `Level ${el.level} ($${el.cost})`,
+        value: el.level,
+    })));
+    levelDropdown.className += ' mr1';
+    toolbar.appendChild(levelDropdown);
+
+    toolbar.appendChild(makeButton('Hire', () => {
+        const level = EMPLOYEE_LEVELS.find(el => el.level == levelDropdown.value);
+        company.costOperation(level.cost, () => {
+            const { name, gender } = randValue(employeeValues);
+            company.addEmployee(makeEmployee({ name, gender, ...level }));
+            return true;
+        });
+    }));
 
     q('#main').append(info);
     q('#main').append(toolbar);

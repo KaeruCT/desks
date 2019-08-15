@@ -1,3 +1,14 @@
+const EMPLOYEE_LEVELS = [1, 2, 3, 4, 5].map(level => {
+    const base = Math.ceil(10 * Math.log(level + 1));
+
+    return {
+        level,
+        cost: Math.pow(base, 3),
+        salary: Math.pow(base, 2),
+        productivity: base * 10,
+    };
+});
+
 class Employee {
     constructor(props) {
         this.name = props.name;

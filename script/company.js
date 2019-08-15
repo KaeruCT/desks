@@ -37,6 +37,13 @@ class Company {
         this.funds -= funds;
     }
 
+    costOperation(cost, operation) {
+        if (this.funds < cost) return false;
+
+        this.takeFunds(cost);
+        return operation();
+    }
+
     makeDesk(props) {
         return {
             productivity: props.productivity,
