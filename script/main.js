@@ -71,9 +71,8 @@ const start = () => {
 const initializeUI = () => {
     const label = (label, id) => {
         const container = document.createElement('div');
-        container.className = `info i-${id}`;
         const labelEl = document.createElement('span');
-        labelEl.className = 'label';
+        labelEl.className = 'label tr b dib';
         labelEl.innerText = `${label}: `;
         const value = document.createElement('span');
         value.id = id;
@@ -82,25 +81,16 @@ const initializeUI = () => {
         return container;
     };
 
-    const button = (btnText, id, action) => {
+    const makeButton = (btnText, action) => {
         const btn = document.createElement('button');
-        btn.innerText = `${btnText}`;
-        btn.id = `${id}`;
-        btn.addEventListener('click', () =>
-            company.addEmployee(
-                new Employee({
-                    name: 'oz',
-                    gender: 'g',
-                    salary: 10,
-                    productivity: 1,
-                    lunchHour: randValue([12, 1, 2])
-                })
-            )
-        );
+        btn.className = 'f6 link dim br2 ph3 pv2 dib white bg-dark-blue';
+        btn.innerText = btnText;
+        btn.addEventListener('click', action);
         return btn;
     };
 
     const info = document.createElement('div');
+    info.className = 'bb b--moon-gray pa3 info';
 
     info.appendChild(label('Funds', 'funds'));
     info.appendChild(label('Employees', 'employees'));
@@ -108,8 +98,22 @@ const initializeUI = () => {
     info.appendChild(label('Day', 'day'));
     info.appendChild(label('Time', 'time'));
 
+    const toolbar = document.createElement('div');
+    toolbar.className = 'pa3';
+    toolbar.appendChild(makeButton('hire employee', () =>
+        company.addEmployee(
+            new Employee({
+                name: 'oz',
+                gender: 'g',
+                salary: 10,
+                productivity: 1,
+                lunchHour: randValue([12, 1, 2])
+            })
+        )
+    ));
+
     q('#main').append(info);
-    q('.i-employees').appendChild(button('buy employee', 'buyEmployee'));
+    q('#main').append(toolbar);
 };
 
 const updateUI = (company, timer) => {
